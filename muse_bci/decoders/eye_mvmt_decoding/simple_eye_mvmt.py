@@ -49,8 +49,8 @@ class SimpleEyeMvmtDecoder(MuseDecoder):
             logger.error(f"Insufficient data points: {eeg_data.shape[0]}/{roi_window}")
             raise ValueError(f"Insufficient data, need at least {roi_window} data points, found {eeg_data.shape[0]}")
 
-        af7 = eeg_data[:roi_window, 0].T
-        af8 = eeg_data[:roi_window, 1].T
+        af7 = eeg_data[-roi_window:, 0].T
+        af8 = eeg_data[-roi_window:, 1].T
 
         if np.any(np.isnan(af7)) or np.any(np.isnan(af8)):
             logger.warning("NaN values detected in EEG data")

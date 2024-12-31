@@ -50,5 +50,5 @@ This then can be passed into the `EventLoop`!
 ## TODO
 - [ ] EventLoop decoder automatic instatiation
 - [ ] Measure accuracy for horziontal eye movement
-- [ ] Add support for custom EEG stream
+- [X] Add support for custom EEG stream
 

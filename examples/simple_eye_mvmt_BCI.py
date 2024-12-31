@@ -3,6 +3,9 @@ import logging
 
 from muse_bci import EventLoop, SimpleEyeMvmtDecoder, setup_logging
 
+"""
+Highly simple BCI based on horizontal eye movements
+"""
 
 if __name__ == "__main__":
     setup_logging("Simple_BCI", logging.WARNING)
