@@ -70,7 +70,7 @@ class ThreadsManager:
         stats = self.get_queue_stats()
         stats_str = "Threads joined. Final stats:"
         for name, val in stats:
-            stats_str += f" {(" ".join(name.split("_"))).capitalize()}={val}"
+            stats_str += f" {(' '.join(name.split('_'))).capitalize()}={val}"
 
         logger.info(stats_str)
     
