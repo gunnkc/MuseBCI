@@ -60,7 +60,7 @@ class MuseStream:
                 logger.error(f"Error during disconnect: {str(e)}")
 
 
-    def process_eeg_data(self, duration=5, chunk_size=12, show_raw_data=False):
+    def process_eeg_data(self, duration=5, chunk_size=256, show_raw_data=False):
         """Process EEG data from the stream for a specified duration"""
         if not self.inlet:
             logger.error("Cannot process data: No active connection")
@@ -123,7 +123,11 @@ class MuseStream:
     @contextmanager
     def collect_data(self, duration: float = 5, chunk_size: int = 12, 
                     show_raw_data: bool = False):
-        """Context manager for collecting EEG data"""
+        """
+        Context manager for collecting EEG data.
+
+        Outputs tuple of (n, 5), (n), where n is the number of samples collected
+        """
         logger.debug(f"Starting data collection context "
                      f"(duration={duration}s, chunk_size={chunk_size})")
         try:
