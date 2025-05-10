@@ -390,14 +390,14 @@ class EventLoop:
         self._thread_manager.stop_threads()
 
 
-    def _collect_eeg_data(self):
+    def _collect_eeg_data(self, stop_event):
         """Collect EEG data from the MuseStream"""
         logger.info("Starting EEG collection thread")
         collection_count = 0
 
         try:
             with MuseStream() as muse:
-                while not self._stop.is_set():
+                while not stop_event.is_set():
                     try:
                         data = muse.process_eeg_data(
                             duration=self._duration,
@@ -409,7 +409,7 @@ class EventLoop:
                             collection_count += 1
                             logger.debug(f"Completed collection cycle {collection_count}")
 
-                            if not self._stop.is_set():
+                            if not stop_event.is_set():
                                 self._data_queue.put(eeg_data, block=True, timeout=1.0)
                                 self._thread_manager.update_stats('data_queue_in')
 
@@ -438,11 +438,11 @@ class EventLoop:
             logger.info(f"Collection thread ending. Total cycles completed: {collection_count}")
 
 
-    def _decode_eeg_data(self):
+    def _decode_eeg_data(self, stop_event):
         """Decode collected EEG data"""
         logger.info("Starting decoding thread")
 
-        while not self._stop.is_set():
+        while not stop_event.is_set():
             try:
                 data = self._data_queue.get(timeout=1.0)
 
@@ -479,11 +479,11 @@ class EventLoop:
     logger.info("Exiting decoding thread")
 
 
-    def _execute_commands(self):
+    def _execute_commands(self, stop_event):
         """Execute decoded commands"""
         logger.info("Starting command execution thread")
 
-        while not self._stop.is_set():
+        while not stop_event.is_set():
             try:
                 cmd = self._cmd_queue.get(timeout=1.0)
 
